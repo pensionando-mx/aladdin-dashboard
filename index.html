@@ -776,7 +776,7 @@ body::before {
   </div>
 
   <div class="sidebar-footer">
-    v1.4.0 · Uso privado<br>
+    v1.5.0 · Uso privado<br>
     <span id="sidebar-clock">--:-- --</span>
   </div>
 </nav>
@@ -1780,48 +1780,64 @@ body::before {
 
   <!-- ══════════ CRM ══════════ -->
   <div class="content" id="page-crm">
-    <div style="margin-bottom:16px;display:flex;gap:10px;">
-      <div style="flex:1;text-align:center;padding:14px;background:#0a0a0a;border:1px solid rgba(255,255,255,0.07);border-radius:12px;">
+    <!-- KPIs CRM -->
+    <div style="margin-bottom:16px;display:flex;gap:10px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:100px;text-align:center;padding:14px;background:#0a0a0a;border:1px solid rgba(255,255,255,0.07);border-radius:12px;">
         <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--gold);" id="crm-total">0</div>
         <div style="font-size:9px;color:var(--silver);font-family:'DM Mono',monospace;margin-top:2px;">TOTAL LEADS</div>
       </div>
-      <div style="flex:1;text-align:center;padding:14px;background:#0a0a0a;border:1px solid rgba(61,184,122,0.2);border-radius:12px;">
+      <div style="flex:1;min-width:100px;text-align:center;padding:14px;background:#0a0a0a;border:1px solid rgba(224,82,82,0.2);border-radius:12px;">
+        <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--red);" id="crm-calientes">0</div>
+        <div style="font-size:9px;color:var(--silver);font-family:'DM Mono',monospace;margin-top:2px;">🔴 CALIENTES</div>
+      </div>
+      <div style="flex:1;min-width:100px;text-align:center;padding:14px;background:#0a0a0a;border:1px solid rgba(201,168,76,0.2);border-radius:12px;">
+        <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--gold);" id="crm-pendientes">0</div>
+        <div style="font-size:9px;color:var(--silver);font-family:'DM Mono',monospace;margin-top:2px;">🟡 SEGUIMIENTO</div>
+      </div>
+      <div style="flex:1;min-width:100px;text-align:center;padding:14px;background:#0a0a0a;border:1px solid rgba(61,184,122,0.2);border-radius:12px;">
         <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--green);" id="crm-clientes">0</div>
-        <div style="font-size:9px;color:var(--silver);font-family:'DM Mono',monospace;margin-top:2px;">CLIENTES</div>
+        <div style="font-size:9px;color:var(--silver);font-family:'DM Mono',monospace;margin-top:2px;">🟢 CLIENTES</div>
       </div>
-      <div style="flex:1;text-align:center;padding:14px;background:#0a0a0a;border:1px solid rgba(224,82,82,0.2);border-radius:12px;">
-        <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--red);" id="crm-pendientes">0</div>
-        <div style="font-size:9px;color:var(--silver);font-family:'DM Mono',monospace;margin-top:2px;">PENDIENTES</div>
-      </div>
-      <div style="flex:1;text-align:center;padding:14px;background:#0a0a0a;border:1px solid rgba(201,168,76,0.2);border-radius:12px;">
+      <div style="flex:1;min-width:100px;text-align:center;padding:14px;background:#0a0a0a;border:1px solid rgba(201,168,76,0.2);border-radius:12px;">
         <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--gold);" id="crm-ingresos-total">$0</div>
-        <div style="font-size:9px;color:var(--silver);font-family:'DM Mono',monospace;margin-top:2px;">INGRESOS CRM</div>
+        <div style="font-size:9px;color:var(--silver);font-family:'DM Mono',monospace;margin-top:2px;">INGRESOS</div>
       </div>
     </div>
+
+    <!-- Seguimientos hoy -->
+    <div class="panel" style="margin-bottom:16px;" id="crm-seguimientos-hoy-panel">
+      <div class="panel-header">
+        <div class="panel-title"><div class="panel-title-icon">🔔</div>Seguimientos para Hoy</div>
+        <div class="panel-action" id="crm-seguimientos-badge" style="color:var(--green);">0 pendientes</div>
+      </div>
+      <div class="panel-body" style="padding:16px;">
+        <div id="crm-seguimientos-hoy" style="display:flex;flex-direction:column;gap:6px;">
+          <div style="text-align:center;padding:16px;color:var(--silver);font-size:11px;">
+            Sin seguimientos para hoy. ✅
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="grid-2">
+      <!-- Lista de leads mejorada -->
       <div class="panel">
         <div class="panel-header">
-          <div class="panel-title"><div class="panel-title-icon">👥</div>Pipeline de Ventas</div>
+          <div class="panel-title"><div class="panel-title-icon">👥</div>Pipeline de Leads</div>
+          <div style="display:flex;gap:6px;">
+            <div class="panel-action" onclick="filtrarLeads('todos')" id="filtro-todos" style="color:var(--gold);">Todos</div>
+            <div class="panel-action" onclick="filtrarLeads('caliente')" id="filtro-caliente">🔴</div>
+            <div class="panel-action" onclick="filtrarLeads('tibio')" id="filtro-tibio">🟡</div>
+            <div class="panel-action" onclick="filtrarLeads('cliente')" id="filtro-cliente">🟢</div>
+          </div>
         </div>
         <div class="panel-body" style="padding:16px;">
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;">
-            <div style="background:#111;border-radius:8px;padding:10px;border:1px solid rgba(255,255,255,0.06);">
-              <div style="font-size:10px;color:var(--silver);margin-bottom:6px;">🔵 Nuevo Lead</div>
-              <div id="pipeline-nuevo" style="display:flex;flex-direction:column;gap:4px;min-height:40px;"></div>
-            </div>
-            <div style="background:#111;border-radius:8px;padding:10px;border:1px solid rgba(255,255,255,0.06);">
-              <div style="font-size:10px;color:var(--silver);margin-bottom:6px;">🟡 En contacto</div>
-              <div id="pipeline-contacto" style="display:flex;flex-direction:column;gap:4px;min-height:40px;"></div>
-            </div>
-            <div style="background:#111;border-radius:8px;padding:10px;border:1px solid rgba(255,255,255,0.06);">
-              <div style="font-size:10px;color:var(--silver);margin-bottom:6px;">🟢 Cliente</div>
-              <div id="pipeline-cliente" style="display:flex;flex-direction:column;gap:4px;min-height:40px;"></div>
-            </div>
-          </div>
-          <div id="lista-leads" style="display:flex;flex-direction:column;gap:6px;"></div>
+          <div id="lista-leads" style="display:flex;flex-direction:column;gap:8px;max-height:500px;overflow-y:auto;"></div>
           <div id="crm-empty" style="text-align:center;padding:20px;color:var(--silver);font-size:11px;">Sin leads registrados aún.</div>
         </div>
       </div>
+
+      <!-- Formulario mejorado -->
       <div class="panel">
         <div class="panel-header">
           <div class="panel-title"><div class="panel-title-icon">+</div>Registrar Lead</div>
@@ -1847,6 +1863,14 @@ body::before {
             </select>
           </div>
           <div class="field-group">
+            <div class="field-label">Temperatura</div>
+            <select class="field-select" id="crm-temperatura">
+              <option value="caliente">🔴 Caliente — quiere comprar ya</option>
+              <option value="tibio">🟡 Tibio — tiene interés pero dudas</option>
+              <option value="frio">🔵 Frío — solo explorando</option>
+            </select>
+          </div>
+          <div class="field-group">
             <div class="field-label">Etapa</div>
             <select class="field-select" id="crm-etapa">
               <option value="nuevo">🔵 Nuevo Lead</option>
@@ -1855,7 +1879,7 @@ body::before {
             </select>
           </div>
           <div class="field-group">
-            <div class="field-label">Producto</div>
+            <div class="field-label">Producto de interés</div>
             <select class="field-select" id="crm-producto">
               <option>Calculadora $250 MXN</option>
               <option>Asesoría personalizada</option>
@@ -1863,8 +1887,12 @@ body::before {
             </select>
           </div>
           <div class="field-group">
+            <div class="field-label">Próximo seguimiento</div>
+            <input type="date" class="field-input" id="crm-siguiente">
+          </div>
+          <div class="field-group">
             <div class="field-label">Notas</div>
-            <textarea class="field-textarea" id="crm-notas" placeholder="Observaciones del lead..." style="min-height:60px;"></textarea>
+            <textarea class="field-textarea" id="crm-notas" placeholder="¿Qué preguntó? ¿Cuál es su situación?" style="min-height:60px;"></textarea>
           </div>
           <button class="btn-generate" onclick="agregarLead()" style="background:rgba(201,168,76,0.15);color:var(--gold);box-shadow:none;">
             + REGISTRAR LEAD
@@ -2098,62 +2126,221 @@ body::before {
 
   <!-- ══════════ VICTORIA ══════════ -->
   <div class="content" id="page-victoria">
-    <div class="grid-2">
-      <div class="panel" style="flex:0 0 280px;max-width:280px;">
-        <div class="panel-body" style="padding:20px;">
-          <div style="text-align:center;margin-bottom:14px;">
-            <div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#2d1b1b,#3d2020);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 10px;">💼</div>
-            <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--white);">Victoria Sterling</div>
-            <div style="font-size:9px;color:var(--gold);font-family:'DM Mono',monospace;letter-spacing:1.5px;margin-top:2px;">CHIEF FINANCIAL OFFICER</div>
-          </div>
-          <div style="background:#111;border-left:2px solid var(--gold);padding:10px;border-radius:0 8px 8px 0;font-size:10px;color:var(--silver);line-height:1.6;font-style:italic;margin-bottom:14px;">
-            "Tu dinero no duerme — yo tampoco. Cero desperdicio, cero sorpresas."
-          </div>
-          <div style="display:flex;flex-direction:column;gap:6px;">
-            <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#111;border-radius:6px;font-size:10px;">
-              <span style="color:var(--silver);">Mandato</span>
-              <span style="color:var(--gold);font-family:'DM Mono',monospace;">ROI+ semana 2</span>
+
+    <!-- Tabs Victoria -->
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+      <button onclick="showVictoriaTab('chat')" id="victoria-tab-chat"
+        style="padding:8px 16px;border-radius:8px;border:1px solid rgba(201,168,76,0.4);background:rgba(201,168,76,0.15);color:var(--gold);font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;letter-spacing:1px;transition:all 0.2s;">
+        💼 CHAT CON VICTORIA
+      </button>
+      <button onclick="showVictoriaTab('finanzas')" id="victoria-tab-finanzas"
+        style="padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:var(--silver);font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;letter-spacing:1px;transition:all 0.2s;">
+        📊 FINANZAS REALES
+      </button>
+      <button onclick="showVictoriaTab('reporte')" id="victoria-tab-reporte"
+        style="padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:var(--silver);font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;letter-spacing:1px;transition:all 0.2s;">
+        ⚡ REPORTE AHORA
+      </button>
+    </div>
+
+    <!-- TAB: CHAT -->
+    <div id="victoria-tab-chat-content">
+      <div class="grid-2">
+        <div class="panel" style="flex:0 0 280px;max-width:280px;">
+          <div class="panel-body" style="padding:20px;">
+            <div style="text-align:center;margin-bottom:14px;">
+              <div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#2d1b1b,#3d2020);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 10px;">💼</div>
+              <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--white);">Victoria Sterling</div>
+              <div style="font-size:9px;color:var(--gold);font-family:'DM Mono',monospace;letter-spacing:1.5px;margin-top:2px;">CHIEF FINANCIAL OFFICER</div>
             </div>
-            <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#111;border-radius:6px;font-size:10px;">
-              <span style="color:var(--silver);">Especialidad</span>
-              <span style="color:var(--gold);font-family:'DM Mono',monospace;">Finanzas · ROI</span>
+            <div style="background:#111;border-left:2px solid var(--gold);padding:10px;border-radius:0 8px 8px 0;font-size:10px;color:var(--silver);line-height:1.6;font-style:italic;margin-bottom:14px;">
+              "Tu dinero no duerme — yo tampoco. Cero desperdicio, cero sorpresas."
             </div>
-            <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#111;border-radius:6px;font-size:10px;">
-              <span style="color:var(--silver);">Credenciales</span>
-              <span style="color:var(--gold);font-family:'DM Mono',monospace;">ex-Goldman · CFA</span>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#111;border-radius:6px;font-size:10px;">
+                <span style="color:var(--silver);">Ingresos</span>
+                <span style="color:var(--green);font-family:'DM Mono',monospace;" id="victoria-ingresos-stat">$0</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#111;border-radius:6px;font-size:10px;">
+                <span style="color:var(--silver);">Gastos</span>
+                <span style="color:var(--red);font-family:'DM Mono',monospace;" id="victoria-gastos-stat">$0</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#111;border-radius:6px;font-size:10px;">
+                <span style="color:var(--silver);">Balance</span>
+                <span style="color:var(--gold);font-family:'DM Mono',monospace;" id="victoria-balance-stat">$0</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#111;border-radius:6px;font-size:10px;">
+                <span style="color:var(--silver);">Estado</span>
+                <span style="color:var(--green);font-family:'DM Mono',monospace;">● EN LÍNEA</span>
+              </div>
             </div>
-            <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#111;border-radius:6px;font-size:10px;">
-              <span style="color:var(--silver);">Estado</span>
-              <span style="color:var(--green);font-family:'DM Mono',monospace;">● EN LÍNEA</span>
+            <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;">
+              <div class="chip" onclick="preguntaAgente('victoria','Analiza mi situación financiera actual del proyecto')">Análisis financiero</div>
+              <div class="chip" onclick="preguntaAgente('victoria','¿Cuánto debo invertir en Meta Ads para ser rentable?')">Presupuesto Ads</div>
+              <div class="chip" onclick="preguntaAgente('victoria','¿Cómo maximizo el ROI con presupuesto mínimo?')">Maximizar ROI</div>
+              <div class="chip" onclick="preguntaAgente('victoria','¿Cuándo deberíamos pausar una campaña?')">Cuándo pausar</div>
+              <div class="chip" onclick="victoriaReporteAhora()">⚡ Reporte ahora</div>
             </div>
-          </div>
-          <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;">
-            <div class="chip" onclick="preguntaAgente('victoria','Analiza mi situación financiera actual del proyecto')">Análisis financiero</div>
-            <div class="chip" onclick="preguntaAgente('victoria','¿Cuánto debo invertir en Meta Ads para ser rentable?')">Presupuesto Ads</div>
-            <div class="chip" onclick="preguntaAgente('victoria','¿Cómo maximizo el ROI con presupuesto mínimo?')">Maximizar ROI</div>
-            <div class="chip" onclick="preguntaAgente('victoria','¿Cuándo deberíamos pausar una campaña?')">Cuándo pausar</div>
           </div>
         </div>
-      </div>
-      <div class="panel" style="flex:1;">
-        <div class="panel-header">
-          <div class="panel-title"><div class="panel-title-icon">💼</div>Chat con Victoria Sterling</div>
-          <div class="panel-action" onclick="limpiarChat('victoria')">Limpiar</div>
-        </div>
-        <div class="panel-body" style="padding:16px;">
-          <div id="chat-victoria" style="min-height:220px;max-height:380px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:14px;">
-            <div style="background:#111;border:1px solid rgba(201,168,76,0.15);border-radius:10px;padding:14px;">
-              <div style="font-size:10px;color:var(--gold);font-family:'DM Mono',monospace;margin-bottom:6px;">💼 VICTORIA STERLING</div>
-              <div style="font-size:12px;color:var(--silver);line-height:1.7;">Javier, soy Victoria. Cada peso que inviertes en este proyecto pasa por mi escritorio. Pregúntame sobre presupuesto, ROI, cuándo escalar, cuándo pausar o cómo estructurar tus finanzas del proyecto. Los números no mienten — yo tampoco.</div>
-            </div>
+        <div class="panel" style="flex:1;">
+          <div class="panel-header">
+            <div class="panel-title"><div class="panel-title-icon">💼</div>Chat con Victoria Sterling</div>
+            <div class="panel-action" onclick="limpiarChat('victoria')">Limpiar</div>
           </div>
-          <div style="display:flex;gap:8px;">
-            <input type="text" id="input-victoria" class="field-input" placeholder="Consulta a Victoria sobre finanzas..." onkeydown="if(event.key==='Enter') preguntaAgente('victoria')">
-            <button onclick="preguntaAgente('victoria')" style="padding:10px 16px;background:var(--gold);border:none;border-radius:8px;color:var(--ink);font-weight:700;cursor:pointer;font-family:'DM Mono',monospace;">→</button>
+          <div class="panel-body" style="padding:16px;">
+            <div id="chat-victoria" style="min-height:220px;max-height:380px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:14px;">
+              <div style="background:#111;border:1px solid rgba(201,168,76,0.15);border-radius:10px;padding:14px;">
+                <div style="font-size:10px;color:var(--gold);font-family:'DM Mono',monospace;margin-bottom:6px;">💼 VICTORIA STERLING</div>
+                <div style="font-size:12px;color:var(--silver);line-height:1.7;">Javier, soy Victoria. Cada peso que inviertes en este proyecto pasa por mi escritorio. Pregúntame sobre presupuesto, ROI, cuándo escalar, cuándo pausar o cómo estructurar tus finanzas del proyecto. Los números no mienten — yo tampoco.</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <input type="text" id="input-victoria" class="field-input" placeholder="Consulta a Victoria sobre finanzas..." onkeydown="if(event.key==='Enter') preguntaAgente('victoria')">
+              <button onclick="preguntaAgente('victoria')" style="padding:10px 16px;background:var(--gold);border:none;border-radius:8px;color:var(--ink);font-weight:700;cursor:pointer;font-family:'DM Mono',monospace;">→</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- TAB: FINANZAS REALES -->
+    <div id="victoria-tab-finanzas-content" style="display:none;">
+
+      <!-- KPIs finanzas -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;">
+        <div style="background:#0a0a0a;border:1px solid rgba(61,184,122,0.2);border-radius:12px;padding:16px;text-align:center;">
+          <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--green);" id="fin-ingresos-total">$0</div>
+          <div style="font-size:9px;color:var(--silver);font-family:'DM Mono',monospace;margin-top:2px;">INGRESOS</div>
+        </div>
+        <div style="background:#0a0a0a;border:1px solid rgba(224,82,82,0.2);border-radius:12px;padding:16px;text-align:center;">
+          <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--red);" id="fin-gastos-total">$0</div>
+          <div style="font-size:9px;color:var(--silver);font-family:'DM Mono',monospace;margin-top:2px;">GASTOS</div>
+        </div>
+        <div style="background:#0a0a0a;border:1px solid rgba(201,168,76,0.2);border-radius:12px;padding:16px;text-align:center;">
+          <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--gold);" id="fin-balance-total">$0</div>
+          <div style="font-size:9px;color:var(--silver);font-family:'DM Mono',monospace;margin-top:2px;">BALANCE</div>
+        </div>
+        <div style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:16px;text-align:center;">
+          <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--white);" id="fin-ventas-count">0</div>
+          <div style="font-size:9px;color:var(--silver);font-family:'DM Mono',monospace;margin-top:2px;">VENTAS</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- Registrar movimiento -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title"><div class="panel-title-icon">➕</div>Registrar Movimiento</div>
+          </div>
+          <div class="panel-body" style="padding:16px;display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;gap:8px;">
+              <button onclick="setTipoMovimiento('ingreso')" id="btn-ingreso"
+                style="flex:1;padding:10px;background:rgba(61,184,122,0.15);border:1px solid rgba(61,184,122,0.4);border-radius:8px;color:var(--green);font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;font-weight:700;">
+                ▲ INGRESO
+              </button>
+              <button onclick="setTipoMovimiento('gasto')" id="btn-gasto"
+                style="flex:1;padding:10px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:var(--silver);font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;font-weight:700;">
+                ▼ GASTO
+              </button>
+            </div>
+            <input id="fin-tipo-hidden" type="hidden" value="ingreso">
+            <div class="field-group">
+              <div class="field-label">Concepto</div>
+              <input type="text" class="field-input" id="fin-concepto" placeholder="Ej: Venta calculadora, Meta Ads, etc.">
+            </div>
+            <div class="field-group">
+              <div class="field-label">Monto ($MXN)</div>
+              <input type="number" class="field-input" id="fin-monto" placeholder="250">
+            </div>
+            <div class="field-group">
+              <div class="field-label">Categoría</div>
+              <select class="field-select" id="fin-categoria">
+                <option value="venta">💰 Venta — Calculadora</option>
+                <option value="asesoria">🤝 Venta — Asesoría</option>
+                <option value="ads">📣 Gasto — Meta Ads</option>
+                <option value="herramienta">🔧 Gasto — Herramienta digital</option>
+                <option value="otro">📦 Otro</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Fecha</div>
+              <input type="date" class="field-input" id="fin-fecha">
+            </div>
+            <button class="btn-generate" onclick="registrarMovimientoFinanzas()">
+              REGISTRAR MOVIMIENTO
+            </button>
+          </div>
+        </div>
+
+        <!-- Historial -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title"><div class="panel-title-icon">📋</div>Historial de Movimientos</div>
+            <div class="panel-action" onclick="victoriaAnalizarFinanzas()">💼 Victoria analiza</div>
+          </div>
+          <div class="panel-body" style="padding:16px;">
+            <div id="fin-historial" style="display:flex;flex-direction:column;gap:6px;max-height:400px;overflow-y:auto;">
+              <div style="text-align:center;padding:30px 0;color:var(--silver);font-size:11px;">
+                Sin movimientos registrados.<br>Registra tu primera venta.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Análisis de Victoria -->
+      <div class="panel" style="margin-top:16px;" id="fin-analisis-panel" style="display:none;">
+        <div class="panel-header">
+          <div class="panel-title"><div class="panel-title-icon">💼</div>Análisis de Victoria Sterling</div>
+        </div>
+        <div class="panel-body" style="padding:16px;">
+          <div id="fin-analisis-output" style="font-size:12px;color:var(--silver);line-height:1.8;white-space:pre-wrap;">
+            Presiona "Victoria analiza" para obtener un análisis financiero basado en tus datos reales.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: REPORTE AHORA -->
+    <div id="victoria-tab-reporte-content" style="display:none;">
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title"><div class="panel-title-icon">⚡</div>Disparar Reporte Ahora</div>
+          </div>
+          <div class="panel-body" style="padding:16px;display:flex;flex-direction:column;gap:12px;">
+            <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);border-radius:10px;padding:12px;font-size:11px;color:var(--silver);line-height:1.7;">
+              ⚡ Dispara el reporte de cualquier agente ahora mismo — sin esperar el horario programado. El reporte llegará a tu Telegram en segundos.
+            </div>
+            <button onclick="dispararReporte('victoria')" class="btn-generate" style="background:rgba(201,168,76,0.15);color:var(--gold);box-shadow:none;">
+              💼 Victoria Sterling — Reporte financiero
+            </button>
+            <button onclick="dispararReporte('cross')" class="btn-generate" style="background:rgba(201,168,76,0.15);color:var(--gold);box-shadow:none;">
+              🎩 Dr. Cross — Status campañas
+            </button>
+            <button onclick="dispararReporte('diana')" class="btn-generate" style="background:rgba(201,168,76,0.15);color:var(--gold);box-shadow:none;">
+              🔎 Diana Chen — 6 ideas ahora
+            </button>
+            <button onclick="dispararReporte('slim')" class="btn-generate" style="background:rgba(201,168,76,0.15);color:var(--gold);box-shadow:none;">
+              🎩 Carlos Slim — Plan estratégico
+            </button>
+            <div id="reporte-status" style="display:none;padding:10px;border-radius:8px;font-size:11px;font-family:'DM Mono',monospace;text-align:center;"></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title"><div class="panel-title-icon">📊</div>Último reporte generado</div>
+          </div>
+          <div class="panel-body" style="padding:16px;">
+            <div id="reporte-output" style="font-size:11px;color:var(--silver);line-height:1.8;white-space:pre-wrap;min-height:100px;">
+              Ningún reporte disparado aún en esta sesión.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- ══════════ DIANA CHEN ══════════ -->
@@ -5713,6 +5900,342 @@ async function preguntaAgenteConYT(agente, preguntaDirecta) {
 }
 // Sobreescribir globalmente
 window.preguntaAgente = preguntaAgenteConYT;
+
+// ══════════════════════════════════════════════
+// 💼 VICTORIA — TABS + FINANZAS REALES + REPORTE AHORA
+// ══════════════════════════════════════════════
+
+function showVictoriaTab(tab) {
+  ['chat','finanzas','reporte'].forEach(t => {
+    const content = document.getElementById(`victoria-tab-${t}-content`);
+    const btn = document.getElementById(`victoria-tab-${t}`);
+    if(content) content.style.display = t === tab ? 'block' : 'none';
+    if(btn) {
+      btn.style.background   = t === tab ? 'rgba(201,168,76,0.15)' : 'transparent';
+      btn.style.color        = t === tab ? 'var(--gold)' : 'var(--silver)';
+      btn.style.borderColor  = t === tab ? 'rgba(201,168,76,0.4)' : 'rgba(255,255,255,0.1)';
+    }
+  });
+}
+
+// ── Finanzas reales ──
+let finanzasData = JSON.parse(localStorage.getItem('aladdin_finanzas') || '[]');
+
+function setTipoMovimiento(tipo) {
+  document.getElementById('fin-tipo-hidden').value = tipo;
+  const btnI = document.getElementById('btn-ingreso');
+  const btnG = document.getElementById('btn-gasto');
+  if(tipo === 'ingreso') {
+    btnI.style.background = 'rgba(61,184,122,0.25)';
+    btnI.style.borderColor = 'rgba(61,184,122,0.6)';
+    btnG.style.background = 'rgba(255,255,255,0.05)';
+    btnG.style.borderColor = 'rgba(255,255,255,0.1)';
+    btnG.style.color = 'var(--silver)';
+  } else {
+    btnG.style.background = 'rgba(224,82,82,0.2)';
+    btnG.style.borderColor = 'rgba(224,82,82,0.5)';
+    btnG.style.color = 'var(--red)';
+    btnI.style.background = 'rgba(255,255,255,0.05)';
+    btnI.style.borderColor = 'rgba(255,255,255,0.1)';
+    btnI.style.color = 'var(--silver)';
+  }
+}
+
+function registrarMovimientoFinanzas() {
+  const tipo      = document.getElementById('fin-tipo-hidden').value;
+  const concepto  = document.getElementById('fin-concepto').value.trim();
+  const monto     = parseFloat(document.getElementById('fin-monto').value);
+  const categoria = document.getElementById('fin-categoria').value;
+  const fecha     = document.getElementById('fin-fecha').value || new Date().toISOString().split('T')[0];
+  if(!concepto || isNaN(monto) || monto <= 0) {
+    showToast('⚠️ Completa concepto y monto', 'error'); return;
+  }
+  finanzasData.push({ id: Date.now(), tipo, concepto, monto, categoria, fecha });
+  localStorage.setItem('aladdin_finanzas', JSON.stringify(finanzasData));
+  // Limpiar form
+  document.getElementById('fin-concepto').value = '';
+  document.getElementById('fin-monto').value = '';
+  renderFinanzas();
+  // Sincronizar con movimientos de Slim
+  if(tipo === 'ingreso') {
+    movimientos.push({ concepto, monto, tipo: categoria, moneda: 'MXN', fecha: new Date().toLocaleDateString('es-MX') });
+  } else {
+    movimientos.push({ concepto, monto: -monto, tipo: categoria, moneda: 'MXN', fecha: new Date().toLocaleDateString('es-MX') });
+  }
+  localStorage.setItem('slim_movimientos', JSON.stringify(movimientos));
+  calcularBalance();
+  showToast(`✅ ${tipo === 'ingreso' ? 'Ingreso' : 'Gasto'} registrado — $${monto} MXN`, 'success');
+}
+
+function renderFinanzas() {
+  let ingresos = 0, gastos = 0, ventas = 0;
+  finanzasData.forEach(m => {
+    if(m.tipo === 'ingreso') { ingresos += m.monto; if(m.categoria === 'venta' || m.categoria === 'asesoria') ventas++; }
+    else gastos += m.monto;
+  });
+  const balance = ingresos - gastos;
+  const setEl = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+  setEl('fin-ingresos-total', `$${ingresos.toLocaleString('es-MX')}`);
+  setEl('fin-gastos-total',   `$${gastos.toLocaleString('es-MX')}`);
+  setEl('fin-balance-total',  `$${balance.toLocaleString('es-MX')}`);
+  setEl('fin-ventas-count',   ventas);
+  setEl('victoria-ingresos-stat', `$${ingresos.toLocaleString('es-MX')}`);
+  setEl('victoria-gastos-stat',   `$${gastos.toLocaleString('es-MX')}`);
+  setEl('victoria-balance-stat',  `$${balance.toLocaleString('es-MX')}`);
+
+  const historial = document.getElementById('fin-historial');
+  if(!historial) return;
+  if(finanzasData.length === 0) {
+    historial.innerHTML = '<div style="text-align:center;padding:30px 0;color:var(--silver);font-size:11px;">Sin movimientos registrados.<br>Registra tu primera venta.</div>';
+    return;
+  }
+  historial.innerHTML = finanzasData.slice().reverse().map(m => `
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#111;border-radius:8px;border-left:2px solid ${m.tipo==='ingreso'?'var(--green)':'var(--red)'};">
+      <span style="font-size:14px;">${m.tipo==='ingreso'?'▲':'▼'}</span>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:11px;font-weight:600;color:var(--white);">${m.concepto}</div>
+        <div style="font-size:9px;color:var(--silver);font-family:'DM Mono',monospace;">${m.fecha} · ${m.categoria}</div>
+      </div>
+      <span style="font-size:12px;font-weight:700;color:${m.tipo==='ingreso'?'var(--green)':'var(--red)'};font-family:'DM Mono',monospace;">
+        ${m.tipo==='ingreso'?'+':'-'}$${m.monto.toLocaleString('es-MX')}
+      </span>
+      <button onclick="eliminarMovimiento(${m.id})"
+        style="background:none;border:none;color:rgba(136,136,136,0.4);cursor:pointer;font-size:12px;padding:0 4px;">✕</button>
+    </div>
+  `).join('');
+}
+
+function eliminarMovimiento(id) {
+  finanzasData = finanzasData.filter(m => m.id !== id);
+  localStorage.setItem('aladdin_finanzas', JSON.stringify(finanzasData));
+  renderFinanzas();
+  showToast('Movimiento eliminado', 'info');
+}
+
+async function victoriaAnalizarFinanzas() {
+  const panel = document.getElementById('fin-analisis-panel');
+  const output = document.getElementById('fin-analisis-output');
+  if(panel) panel.style.display = 'block';
+  if(output) output.textContent = '💼 Victoria analizando tus finanzas...';
+  if(!GEMINI_KEY) {
+    if(output) output.textContent = '⚠️ Configura tu Gemini API Key para análisis en tiempo real.';
+    return;
+  }
+  let ingresos = 0, gastos = 0;
+  finanzasData.forEach(m => { if(m.tipo==='ingreso') ingresos+=m.monto; else gastos+=m.monto; });
+  const resumen = finanzasData.slice(-10).map(m => `${m.tipo==='ingreso'?'▲':'▼'} ${m.concepto}: $${m.monto} (${m.fecha})`).join('\n');
+  const prompt = `Eres Victoria Sterling, CFO de "Pensionando a México".
+DATOS REALES DE JAVIER:
+Total ingresos: $${ingresos} MXN
+Total gastos: $${gastos} MXN
+Balance: $${ingresos-gastos} MXN
+Últimos movimientos:\n${resumen||'Sin movimientos'}
+Analiza esta situación financiera y da recomendaciones específicas. Máximo 200 palabras. Directo y útil.
+Firma: "— Victoria Sterling 💼"`;
+  try {
+    const resp = await llamarGemini(prompt, { temperature: 0.7, maxTokens: 400 });
+    if(output) { output.style.whiteSpace='pre-wrap'; output.textContent = resp; }
+    if(TG_TOKEN && TG_CHATID) await enviarTelegram(`💼 <b>VICTORIA — ANÁLISIS FINANCIERO</b>\n\n${resp}`);
+  } catch(e) {
+    if(output) output.textContent = '❌ Error: ' + e.message;
+  }
+}
+
+// ── Reporte inmediato por agente ──
+async function dispararReporte(agente) {
+  const status = document.getElementById('reporte-status');
+  const output = document.getElementById('reporte-output');
+  if(status) { status.style.display='block'; status.style.color='var(--gold)'; status.textContent=`⏳ Generando reporte de ${agente}...`; }
+  if(!GEMINI_KEY) { showToast('⚠️ Configura tu Gemini API Key', 'error'); return; }
+
+  const prompts = {
+    victoria: `Eres Victoria Sterling, CFO de "Pensionando a México". Es ${new Date().toLocaleString('es-MX')}.
+Genera reporte financiero ejecutivo: 📊 BALANCE | 💰 GASTO VS RESULTADO | ⚠️ ALERTAS | ✅ RECOMENDACIÓN
+Máximo 180 palabras. Firma: "— Victoria Sterling 💼"`,
+    cross: `Eres Dr. Cross, CRO de "Pensionando a México". Es ${new Date().toLocaleString('es-MX')}.
+Reporte de campañas: 📊 STATUS | 🎯 ACCIÓN HOY | ⚡ COPY SUGERIDO | ⚠️ POLÍTICA META
+Máximo 200 palabras. Firma: "— Dr. Cross 🎩"`,
+    diana: `Eres Diana Chen, CIO de "Pensionando a México". Es ${new Date().toLocaleString('es-MX')}.
+Genera 6 ideas de contenido para Meta Ads esta semana. Público: trabajadores 45-60 años, pensión IMSS Ley 73.
+Cada idea: ángulo emocional + formato + copy. Máximo 400 palabras. Firma: "— Diana Chen 🔎"`,
+    slim: `Eres Carlos Slim, CEO Virtual de "Pensionando a México". Es ${new Date().toLocaleString('es-MX')}.
+Plan estratégico: 📊 SITUACIÓN ACTUAL | ⚡ 3 ACCIONES ESTA SEMANA | 💡 IDEA DISRUPTIVA | 📈 META
+Máximo 300 palabras. Firma: "— Carlos Slim 🎩"`
+  };
+
+  try {
+    const resp = await llamarGemini(prompts[agente], { temperature: 0.8, maxTokens: 600 });
+    if(output) { output.style.whiteSpace='pre-wrap'; output.textContent = resp; }
+    if(status) { status.style.color='var(--green)'; status.textContent='✅ Reporte generado y enviado a Telegram'; }
+    if(TG_TOKEN && TG_CHATID) await enviarTelegram(resp);
+    showToast('✅ Reporte enviado a Telegram', 'success');
+  } catch(e) {
+    if(status) { status.style.color='var(--red)'; status.textContent='❌ Error: ' + e.message; }
+  }
+}
+
+// ── Victoria reporte ahora (acceso rápido) ──
+async function victoriaReporteAhora() {
+  showVictoriaTab('reporte');
+  await dispararReporte('victoria');
+}
+
+// ══════════════════════════════════════════════
+// 👥 CRM MEJORADO — con temperatura y seguimiento
+// ══════════════════════════════════════════════
+
+function renderCRM() {
+  const leads = JSON.parse(localStorage.getItem('aladdin_leads') || '[]');
+  const lista = document.getElementById('lista-leads');
+  const empty = document.getElementById('crm-empty');
+  const hoy   = new Date().toISOString().split('T')[0];
+
+  // KPIs
+  const total    = leads.length;
+  const clientes = leads.filter(l => l.etapa === 'cliente').length;
+  const calientes= leads.filter(l => l.temperatura === 'caliente' && l.etapa !== 'cliente').length;
+  const seguHoy  = leads.filter(l => l.siguiente === hoy && l.etapa !== 'cliente').length;
+  const ingresos = leads.filter(l=>l.etapa==='cliente').length * 250;
+
+  const setEl = (id, val) => { const el=document.getElementById(id); if(el) el.textContent=val; };
+  setEl('crm-total', total);
+  setEl('crm-clientes', clientes);
+  setEl('crm-calientes', calientes);
+  setEl('crm-pendientes', seguHoy);
+  setEl('crm-ingresos-total', `$${ingresos.toLocaleString('es-MX')}`);
+
+  // Seguimientos hoy
+  const seguListaEl = document.getElementById('crm-seguimientos-hoy');
+  const seguBadge   = document.getElementById('crm-seguimientos-badge');
+  const seguHoyLeads = leads.filter(l => l.siguiente === hoy && l.etapa !== 'cliente');
+  if(seguBadge) { seguBadge.textContent = `${seguHoyLeads.length} pendientes`; seguBadge.style.color = seguHoyLeads.length > 0 ? 'var(--red)' : 'var(--green)'; }
+  if(seguListaEl) {
+    if(seguHoyLeads.length === 0) {
+      seguListaEl.innerHTML = '<div style="text-align:center;padding:16px;color:var(--silver);font-size:11px;">Sin seguimientos para hoy. ✅</div>';
+    } else {
+      seguListaEl.innerHTML = seguHoyLeads.map(l => `
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#111;border-radius:8px;border-left:2px solid var(--red);">
+          <span style="font-size:16px;">${l.temperatura==='caliente'?'🔴':l.temperatura==='tibio'?'🟡':'🔵'}</span>
+          <div style="flex:1;">
+            <div style="font-size:12px;font-weight:600;color:var(--white);">${l.nombre}</div>
+            <div style="font-size:10px;color:var(--silver);">${l.tel||'Sin teléfono'} · ${l.producto||''}</div>
+            ${l.notas?`<div style="font-size:10px;color:var(--silver);font-style:italic;">"${l.notas.substring(0,60)}..."</div>`:''}
+          </div>
+          <a href="https://wa.me/${(l.tel||'').replace(/\D/g,'')}?text=Hola%20${encodeURIComponent(l.nombre)}%2C%20te%20contacto%20de%20Pensionando%20a%20M%C3%A9xico."
+            target="_blank"
+            style="padding:6px 12px;background:rgba(61,184,122,0.15);border:1px solid rgba(61,184,122,0.3);border-radius:6px;color:var(--green);font-size:10px;font-family:'DM Mono',monospace;text-decoration:none;">
+            📱 WhatsApp
+          </a>
+        </div>`).join('');
+    }
+  }
+
+  // Lista de leads
+  if(!lista) return;
+  if(leads.length === 0) { if(empty) empty.style.display='block'; lista.innerHTML=''; return; }
+  if(empty) empty.style.display='none';
+
+  const tempColor = { caliente:'var(--red)', tibio:'var(--gold)', frio:'var(--silver)' };
+  const etapaColor = { nuevo:'#6B9FD4', contacto:' var(--gold)', cliente:'var(--green)' };
+
+  lista.innerHTML = leads.slice().reverse().map(l => `
+    <div style="padding:12px;background:#111;border-radius:10px;border:1px solid rgba(255,255,255,0.06);transition:all 0.2s;"
+      onmouseover="this.style.borderColor='rgba(201,168,76,0.25)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.06)'">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;">
+        <span style="font-size:14px;">${l.temperatura==='caliente'?'🔴':l.temperatura==='tibio'?'🟡':'🔵'}</span>
+        <span style="font-size:12px;font-weight:600;color:var(--white);">${l.nombre}</span>
+        <span style="font-size:9px;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:4px;background:rgba(255,255,255,0.06);color:${tempColor[l.temperatura]||'var(--silver)'};">${l.temperatura?.toUpperCase()||'—'}</span>
+        <span style="margin-left:auto;font-size:9px;color:var(--silver);font-family:'DM Mono',monospace;">${l.canal||''}</span>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:6px;">
+        ${l.tel?`<span style="font-size:10px;color:var(--silver);">📱 ${l.tel}</span>`:''}
+        ${l.producto?`<span style="font-size:10px;color:var(--silver);">🛍 ${l.producto}</span>`:''}
+        ${l.siguiente?`<span style="font-size:10px;color:${l.siguiente===hoy?'var(--red)':'var(--silver)'};">📅 Seguimiento: ${l.siguiente}</span>`:''}
+      </div>
+      ${l.notas?`<div style="font-size:10px;color:var(--silver);font-style:italic;margin-bottom:6px;">"${l.notas.substring(0,80)}${l.notas.length>80?'...':''}"</div>`:''}
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        ${l.tel?`<a href="https://wa.me/${(l.tel||'').replace(/\D/g,'')}?text=Hola%20${encodeURIComponent(l.nombre)}"
+          target="_blank" style="padding:4px 10px;background:rgba(61,184,122,0.1);border:1px solid rgba(61,184,122,0.2);border-radius:6px;color:var(--green);font-size:9px;font-family:'DM Mono',monospace;text-decoration:none;">📱 WhatsApp</a>`:''}
+        <button onclick="cambiarEtapaLead(${l.id},'cliente')" style="padding:4px 10px;background:rgba(61,184,122,0.1);border:1px solid rgba(61,184,122,0.2);border-radius:6px;color:var(--green);font-size:9px;cursor:pointer;font-family:'DM Mono',monospace;">✅ Cerrar venta</button>
+        <button onclick="eliminarLead(${l.id})" style="padding:4px 10px;background:rgba(224,82,82,0.08);border:1px solid rgba(224,82,82,0.2);border-radius:6px;color:var(--red);font-size:9px;cursor:pointer;font-family:'DM Mono',monospace;">🗑</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filtrarLeads(filtro) {
+  const leads = JSON.parse(localStorage.getItem('aladdin_leads') || '[]');
+  const lista = document.getElementById('lista-leads');
+  if(!lista) return;
+  const filtrados = filtro === 'todos' ? leads : leads.filter(l =>
+    filtro === 'caliente' ? l.temperatura === 'caliente' :
+    filtro === 'tibio'    ? l.temperatura === 'tibio' :
+    filtro === 'cliente'  ? l.etapa === 'cliente' : true
+  );
+  if(filtrados.length === 0) {
+    lista.innerHTML = '<div style="text-align:center;padding:20px;color:var(--silver);font-size:11px;">Sin leads en esta categoría.</div>';
+    return;
+  }
+  // Re-usar renderCRM pero solo con filtrados
+  localStorage.setItem('aladdin_leads_temp', JSON.stringify(filtrados));
+  renderCRM();
+}
+
+function cambiarEtapaLead(id, etapa) {
+  const leads = JSON.parse(localStorage.getItem('aladdin_leads') || '[]');
+  const lead = leads.find(l => l.id === id);
+  if(lead) {
+    lead.etapa = etapa;
+    if(etapa === 'cliente') {
+      // Registrar ingreso automáticamente en finanzas
+      finanzasData.push({ id: Date.now(), tipo: 'ingreso', concepto: `Venta — ${lead.nombre}`, monto: 250, categoria: 'venta', fecha: new Date().toISOString().split('T')[0] });
+      localStorage.setItem('aladdin_finanzas', JSON.stringify(finanzasData));
+      renderFinanzas();
+      showToast(`🎉 ¡Venta cerrada con ${lead.nombre}! $250 registrados`, 'success');
+      if(TG_TOKEN && TG_CHATID) enviarTelegram(`🎉 <b>¡VENTA CERRADA!</b>\n\n👤 ${lead.nombre}\n💰 $250 MXN\n📱 ${lead.tel||'—'}\n\n— ALADDIN 🧞`);
+    }
+    localStorage.setItem('aladdin_leads', JSON.stringify(leads));
+    renderCRM();
+  }
+}
+
+function eliminarLead(id) {
+  let leads = JSON.parse(localStorage.getItem('aladdin_leads') || '[]');
+  leads = leads.filter(l => l.id !== id);
+  localStorage.setItem('aladdin_leads', JSON.stringify(leads));
+  renderCRM();
+  showToast('Lead eliminado', 'info');
+}
+
+// Override agregarLead to support new fields
+function agregarLead() {
+  const nombre     = document.getElementById('crm-nombre')?.value?.trim();
+  const tel        = document.getElementById('crm-tel')?.value?.trim();
+  const canal      = document.getElementById('crm-canal')?.value;
+  const etapa      = document.getElementById('crm-etapa')?.value;
+  const temperatura= document.getElementById('crm-temperatura')?.value || 'tibio';
+  const producto   = document.getElementById('crm-producto')?.value;
+  const siguiente  = document.getElementById('crm-siguiente')?.value;
+  const notas      = document.getElementById('crm-notas')?.value?.trim();
+  if(!nombre) { showToast('⚠️ Ingresa al menos el nombre', 'error'); return; }
+  const leads = JSON.parse(localStorage.getItem('aladdin_leads') || '[]');
+  leads.push({ id: Date.now(), nombre, tel, canal, etapa, temperatura, producto, siguiente, notas, fecha: new Date().toLocaleDateString('es-MX') });
+  localStorage.setItem('aladdin_leads', JSON.stringify(leads));
+  ['crm-nombre','crm-tel','crm-notas','crm-siguiente'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  renderCRM();
+  showToast(`✅ Lead "${nombre}" registrado`, 'success');
+  if(TG_TOKEN && TG_CHATID && temperatura === 'caliente') {
+    enviarTelegram(`🔴 <b>LEAD CALIENTE</b>\n\n👤 ${nombre}\n📱 ${tel||'—'}\n🛍 ${producto||'—'}\n📣 ${canal||'—'}\n\n⚡ Contactar HOY\n\n— ALADDIN 🧞`);
+  }
+}
+
+// Init finanzas on load
+document.addEventListener('DOMContentLoaded', () => {
+  renderFinanzas();
+  // Set today's date on fin-fecha
+  const finFecha = document.getElementById('fin-fecha');
+  if(finFecha) finFecha.value = new Date().toISOString().split('T')[0];
+});
 </script>
 </body>
 </html>
